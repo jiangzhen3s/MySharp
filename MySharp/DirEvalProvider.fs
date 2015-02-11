@@ -5,7 +5,17 @@ open System.IO
 open System.Text
 open System.Collections.Generic
 
-let env = new Dictionary<string, Dictionary<string, string>>()
+let propEnv = new Dictionary<string, Dictionary<string, string>>()
+let varEnv : (string * string )list = []
+
+let setVar name value varenv =
+    (name,value)::varenv
+let getVar name varenv =
+    List.tryFind( fun (name',v)->name=name') varenv
+
+//let newVarEnv = setVar "a" "b" varEnv
+//getVar "a" newVarEnv
+
 let getDirInfo path = new DirectoryInfo(path)
 let getSubDirs currentDirPath = Directory.GetDirectories(currentDirPath) |> Array.map getDirInfo
 
@@ -38,3 +48,14 @@ let eval stmt =
     | Select(exprs, dirs, Some(whereExprs)) -> ()
     | Select(exprs, dirs, None) -> ()
     | Set(name, str) -> ()
+
+
+
+(*
+examples:
+
+SET c <- 'C:\\Temp'
+SELECT * FROM c --query all properties about directory info 
+SELECT * FROM c WHERE c.Name LIKE '%test%' --search directory
+
+*)
