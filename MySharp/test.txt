@@ -1,10 +1,7 @@
 hello hello 2
-
 public class a{
 public void work(){ad}
 }
-
-
 public class b {
 public void main(){asdf}
 }
