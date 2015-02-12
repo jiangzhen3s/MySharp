@@ -6,6 +6,6 @@ public class a{
 }
 public class b {
     public void main(){
-        show("gogog")
+        show("hello world")
     }
 }
