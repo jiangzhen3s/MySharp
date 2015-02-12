@@ -1,7 +1,7 @@
 ﻿(* Abstract syntax for micro-SQL, very simple SQL SELECT statements 
    sestoft@itu.dk 2009-09-03
-   nnnn
    t
+   nnnn
  *)
 
 module Absyn
