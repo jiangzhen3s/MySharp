@@ -71,6 +71,7 @@
     <None Include="Scripts\load-project.fsx" />
     <None Include="FanfouProvider.fsx" />
     <Content Include="test.txt" />
+    <Content Include="test2.txt" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FsLexYacc.Runtime">
