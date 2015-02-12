@@ -1,7 +1,7 @@
 hello hello 2
 public class a{
   public void work(){
-    show("hello world")
+    show("gogogo")
   }
 }
 public class b {
