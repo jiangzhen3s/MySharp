@@ -49,9 +49,22 @@ let fromFile (filename : string) =
 
 [<TestClass>]
 type ``lexer test: like token test ``() = 
+    
     [<TestMethod>]
-    member test.``when I ask whether it is On it answers true.``() = 
+    member test.``test lexer: like keyword``() = 
         let src = "SELECT * FROM A WHERE C LIKE '%abc%'"
         let tokens = fromStringLex src
-        tokens |> List.length |> should equal 8
-        tokens |> sprintf "%A" |> should equal @"[SELECT; TIMES; FROM; NAME ""a""; WHERE; NAME ""c""; LIKE; CSTSTRING ""%abc%""]"
+        tokens |> should equal [ UsqlPar.SELECT
+                                 UsqlPar.TIMES
+                                 UsqlPar.FROM
+                                 UsqlPar.NAME("a")
+                                 UsqlPar.WHERE
+                                 UsqlPar.NAME("c")
+                                 UsqlPar.LIKE
+                                 UsqlPar.CSTSTRING("%abc%") ]
+    
+    [<TestMethod>]
+    member test.``test parser: like keyword``() = 
+        let src = "SELECT * FROM A WHERE C LIKE '%abc%'"
+        let stmt = fromString src
+        stmt |> should equal (Select([ Star ], [ "a" ], Some([ Like(ColumnExpr(Column("c")), "%abc%") ])))
