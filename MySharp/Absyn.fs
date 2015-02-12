@@ -24,5 +24,5 @@ and expr =
   | Cst of constant                     (* Constant                       *)
   | ColumnExpr of column                (* Column                         *)
   | Prim of string * expr list          (* Built-in function              *)
-  | Like of expr*string               (* Like *)
+  | Like of expr*string                 (* Like ,pattern type is regex *)
 
