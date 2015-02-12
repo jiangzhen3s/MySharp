@@ -1,6 +1,8 @@
 hello hello 2
 
-public class a{}
+public class a{
+public void work(){ad}
+}
 
 
 public class b {
