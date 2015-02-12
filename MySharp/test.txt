@@ -4,5 +4,5 @@ public class a{}
 
 
 public class b {
-asdf
+public void main(){asdf}
 }
