@@ -26,7 +26,8 @@ let _ = List.iter keywords.Add
           ("select",   SELECT);
           ("true",     CSTBOOL true);
           ("where",    WHERE);
-          ("set",      SET)]
+          ("set",      SET);
+          ("like",     LIKE)]
 
 let keyword s =
     if keywords.ContainsKey(s) then keywords.Item(s)

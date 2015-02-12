@@ -27,7 +27,8 @@ let _ = List.iter keywords.Add
           ("select",   SELECT);
           ("true",     CSTBOOL true);
           ("where",    WHERE);
-          ("set",      SET)]
+          ("set",      SET);
+          ("like",     LIKE)]
 
 let keyword s =
     if keywords.ContainsKey(s) then keywords.Item(s)
@@ -48,7 +49,7 @@ let cEscape s =
     
   (* A string constant is scanned as a list of characters. *)
 
-# 51 "Lexer.fs"
+# 52 "Lexer.fs"
 let trans : uint16[] array = 
     [| 
     (* State 0 *)
@@ -155,192 +156,192 @@ and String chars (lexbuf : Microsoft.FSharp.Text.Lexing.LexBuffer<_>) = _fslex_S
 and _fslex_Token  _fslex_state lexbuf =
   match _fslex_tables.Interpret(_fslex_state,lexbuf) with
   | 0 -> ( 
-# 52 "..\MySharp\Lexer.fsl"
+# 53 "..\MySharp\Lexer.fsl"
                                      Token lexbuf 
-# 160 "Lexer.fs"
+# 161 "Lexer.fs"
           )
   | 1 -> ( 
-# 53 "..\MySharp\Lexer.fsl"
+# 54 "..\MySharp\Lexer.fsl"
                                      lexbuf.EndPos <- lexbuf.EndPos.NextLine; Token lexbuf 
-# 165 "Lexer.fs"
+# 166 "Lexer.fs"
           )
   | 2 -> ( 
-# 54 "..\MySharp\Lexer.fsl"
+# 55 "..\MySharp\Lexer.fsl"
                                      CSTINT (System.Int32.Parse (lexemeAsString lexbuf)) 
-# 170 "Lexer.fs"
+# 171 "Lexer.fs"
           )
   | 3 -> ( 
-# 56 "..\MySharp\Lexer.fsl"
+# 57 "..\MySharp\Lexer.fsl"
                                      keyword ((lexemeAsString lexbuf).ToLower()) 
-# 175 "Lexer.fs"
+# 176 "Lexer.fs"
           )
   | 4 -> ( 
-# 58 "..\MySharp\Lexer.fsl"
+# 59 "..\MySharp\Lexer.fsl"
                                      NAME (lexemeAsString lexbuf) 
-# 180 "Lexer.fs"
+# 181 "Lexer.fs"
           )
   | 5 -> ( 
-# 59 "..\MySharp\Lexer.fsl"
+# 60 "..\MySharp\Lexer.fsl"
                                      PLUS 
-# 185 "Lexer.fs"
+# 186 "Lexer.fs"
           )
   | 6 -> ( 
-# 60 "..\MySharp\Lexer.fsl"
+# 61 "..\MySharp\Lexer.fsl"
                                      MINUS 
-# 190 "Lexer.fs"
+# 191 "Lexer.fs"
           )
   | 7 -> ( 
-# 61 "..\MySharp\Lexer.fsl"
+# 62 "..\MySharp\Lexer.fsl"
                                      TIMES 
-# 195 "Lexer.fs"
+# 196 "Lexer.fs"
           )
   | 8 -> ( 
-# 62 "..\MySharp\Lexer.fsl"
+# 63 "..\MySharp\Lexer.fsl"
                                      DIV 
-# 200 "Lexer.fs"
+# 201 "Lexer.fs"
           )
   | 9 -> ( 
-# 63 "..\MySharp\Lexer.fsl"
+# 64 "..\MySharp\Lexer.fsl"
                                      MOD 
-# 205 "Lexer.fs"
+# 206 "Lexer.fs"
           )
   | 10 -> ( 
-# 64 "..\MySharp\Lexer.fsl"
+# 65 "..\MySharp\Lexer.fsl"
                                      EQ 
-# 210 "Lexer.fs"
+# 211 "Lexer.fs"
           )
   | 11 -> ( 
-# 65 "..\MySharp\Lexer.fsl"
+# 66 "..\MySharp\Lexer.fsl"
                                      ASSIGN 
-# 215 "Lexer.fs"
+# 216 "Lexer.fs"
           )
   | 12 -> ( 
-# 66 "..\MySharp\Lexer.fsl"
+# 67 "..\MySharp\Lexer.fsl"
                                      NE 
-# 220 "Lexer.fs"
+# 221 "Lexer.fs"
           )
   | 13 -> ( 
-# 67 "..\MySharp\Lexer.fsl"
+# 68 "..\MySharp\Lexer.fsl"
                                      GT 
-# 225 "Lexer.fs"
+# 226 "Lexer.fs"
           )
   | 14 -> ( 
-# 68 "..\MySharp\Lexer.fsl"
+# 69 "..\MySharp\Lexer.fsl"
                                      LT 
-# 230 "Lexer.fs"
+# 231 "Lexer.fs"
           )
   | 15 -> ( 
-# 69 "..\MySharp\Lexer.fsl"
+# 70 "..\MySharp\Lexer.fsl"
                                      GE 
-# 235 "Lexer.fs"
+# 236 "Lexer.fs"
           )
   | 16 -> ( 
-# 70 "..\MySharp\Lexer.fsl"
+# 71 "..\MySharp\Lexer.fsl"
                                      LE 
-# 240 "Lexer.fs"
+# 241 "Lexer.fs"
           )
   | 17 -> ( 
-# 71 "..\MySharp\Lexer.fsl"
+# 72 "..\MySharp\Lexer.fsl"
                                      LPAR 
-# 245 "Lexer.fs"
+# 246 "Lexer.fs"
           )
   | 18 -> ( 
-# 72 "..\MySharp\Lexer.fsl"
+# 73 "..\MySharp\Lexer.fsl"
                                      RPAR 
-# 250 "Lexer.fs"
+# 251 "Lexer.fs"
           )
   | 19 -> ( 
-# 73 "..\MySharp\Lexer.fsl"
+# 74 "..\MySharp\Lexer.fsl"
                                      COMMA 
-# 255 "Lexer.fs"
+# 256 "Lexer.fs"
           )
   | 20 -> ( 
-# 74 "..\MySharp\Lexer.fsl"
+# 75 "..\MySharp\Lexer.fsl"
                                      DOT 
-# 260 "Lexer.fs"
+# 261 "Lexer.fs"
           )
   | 21 -> ( 
-# 75 "..\MySharp\Lexer.fsl"
+# 76 "..\MySharp\Lexer.fsl"
                                      SkipToEndLine lexbuf; Token lexbuf 
-# 265 "Lexer.fs"
+# 266 "Lexer.fs"
           )
   | 22 -> ( 
-# 76 "..\MySharp\Lexer.fsl"
+# 77 "..\MySharp\Lexer.fsl"
                                      CSTSTRING (String [] lexbuf) 
-# 270 "Lexer.fs"
+# 271 "Lexer.fs"
           )
   | 23 -> ( 
-# 77 "..\MySharp\Lexer.fsl"
+# 78 "..\MySharp\Lexer.fsl"
                                      EOF 
-# 275 "Lexer.fs"
+# 276 "Lexer.fs"
           )
   | 24 -> ( 
-# 78 "..\MySharp\Lexer.fsl"
+# 79 "..\MySharp\Lexer.fsl"
                                      failwith "Lexer error: illegal symbol" 
-# 280 "Lexer.fs"
+# 281 "Lexer.fs"
           )
   | _ -> failwith "Token"
 (* Rule SkipToEndLine *)
 and _fslex_SkipToEndLine  _fslex_state lexbuf =
   match _fslex_tables.Interpret(_fslex_state,lexbuf) with
   | 0 -> ( 
-# 81 "..\MySharp\Lexer.fsl"
+# 82 "..\MySharp\Lexer.fsl"
                                      lexbuf.EndPos <- lexbuf.EndPos.NextLine 
-# 289 "Lexer.fs"
+# 290 "Lexer.fs"
           )
   | 1 -> ( 
-# 82 "..\MySharp\Lexer.fsl"
+# 83 "..\MySharp\Lexer.fsl"
                                      () 
-# 294 "Lexer.fs"
+# 295 "Lexer.fs"
           )
   | 2 -> ( 
-# 83 "..\MySharp\Lexer.fsl"
+# 84 "..\MySharp\Lexer.fsl"
                                      SkipToEndLine lexbuf 
-# 299 "Lexer.fs"
+# 300 "Lexer.fs"
           )
   | _ -> failwith "SkipToEndLine"
 (* Rule String *)
 and _fslex_String chars _fslex_state lexbuf =
   match _fslex_tables.Interpret(_fslex_state,lexbuf) with
   | 0 -> ( 
-# 87 "..\MySharp\Lexer.fsl"
+# 88 "..\MySharp\Lexer.fsl"
                        Microsoft.FSharp.Core.String.concat "" (List.map string (List.rev chars)) 
-# 308 "Lexer.fs"
+# 309 "Lexer.fs"
           )
   | 1 -> ( 
-# 89 "..\MySharp\Lexer.fsl"
+# 90 "..\MySharp\Lexer.fsl"
                        String (cEscape (lexemeAsString lexbuf) :: chars) lexbuf 
-# 313 "Lexer.fs"
+# 314 "Lexer.fs"
           )
   | 2 -> ( 
-# 91 "..\MySharp\Lexer.fsl"
+# 92 "..\MySharp\Lexer.fsl"
                        String ('\'' :: chars) lexbuf 
-# 318 "Lexer.fs"
+# 319 "Lexer.fs"
           )
   | 3 -> ( 
-# 93 "..\MySharp\Lexer.fsl"
+# 94 "..\MySharp\Lexer.fsl"
                        failwith "Lexer error: illegal escape sequence" 
-# 323 "Lexer.fs"
+# 324 "Lexer.fs"
           )
   | 4 -> ( 
-# 95 "..\MySharp\Lexer.fsl"
+# 96 "..\MySharp\Lexer.fsl"
                        failwith "Lexer error: unterminated string" 
-# 328 "Lexer.fs"
+# 329 "Lexer.fs"
           )
   | 5 -> ( 
-# 97 "..\MySharp\Lexer.fsl"
+# 98 "..\MySharp\Lexer.fsl"
                        failwith "Lexer error: newline in string" 
-# 333 "Lexer.fs"
+# 334 "Lexer.fs"
           )
   | 6 -> ( 
-# 99 "..\MySharp\Lexer.fsl"
+# 100 "..\MySharp\Lexer.fsl"
                        failwith "Lexer error: invalid character in string" 
-# 338 "Lexer.fs"
+# 339 "Lexer.fs"
           )
   | 7 -> ( 
-# 101 "..\MySharp\Lexer.fsl"
+# 102 "..\MySharp\Lexer.fsl"
                        String (char (lexbuf.LexemeChar 0) :: chars) lexbuf 
-# 343 "Lexer.fs"
+# 344 "Lexer.fs"
           )
   | _ -> failwith "String"
 

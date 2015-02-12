@@ -26,6 +26,7 @@ type token =
   | SELECT
   | WHERE
   | SET
+  | LIKE
   | CSTBOOL of (bool)
   | CSTSTRING of (string)
   | NAME of (string)
@@ -55,6 +56,7 @@ type tokenId =
     | TOKEN_SELECT
     | TOKEN_WHERE
     | TOKEN_SET
+    | TOKEN_LIKE
     | TOKEN_CSTBOOL
     | TOKEN_CSTSTRING
     | TOKEN_NAME
