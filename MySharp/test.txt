@@ -1,9 +1,11 @@
 hello hello 2
 public class a{
-public void work(){ad}
+  public void work(){
+    show("hello world")
+  }
 }
 public class b {
-	public void main(){
-		show("gogog")
-	}
+    public void main(){
+        show("gogog")
+    }
 }
