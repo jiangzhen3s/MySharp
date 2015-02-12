@@ -31,6 +31,15 @@ let filterValue names nameValues =
 // get dir info properties
 let getValues names obj = getAllValue obj |> filterValue names
 
+//initial env 
+let initialEnv tableNames varEnv = 
+    tableNames
+    |> List.choose (fun tn -> getVar tn varEnv)
+    |> List.map (fun (name, fullName : string) -> 
+           // if path end with \ then get all sub dirs
+           if fullName.EndsWith("\\") then getSubDirs (fullName) |> List.ofArray
+           else [ new DirectoryInfo(fullName) ])
+
 //eval absyn 
 let eval stmt = 
     match stmt with
@@ -39,7 +48,7 @@ let eval stmt =
     | Set(name, str) -> ()
 (*
 stmt examples:
-
+SET allsubdirs <- 'C:\\Temp\\'
 SET c <- 'C:\\Temp'
 SELECT * FROM c --query all properties about directory info 
 SELECT * FROM c WHERE c.Name LIKE '%test%' --search directory
