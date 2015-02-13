@@ -1,4 +1,5 @@
-﻿module DirEvalProvider
+﻿[<AutoOpen>]
+module DirEvalProvider
 
 open Absyn
 open System.IO
@@ -32,18 +33,42 @@ let filterValue names nameValues =
 let getValues names obj = getAllValue obj |> filterValue names
 
 //initial env 
-let initialEnv tableNames varEnv = 
-    tableNames
-    |> List.choose (fun tn -> getVar tn varEnv)
-    |> List.map (fun (name, fullName : string) -> 
-           // if path end with \ then get all sub dirs
-           if fullName.EndsWith("\\") then getSubDirs (fullName) |> List.ofArray
-           else [ new DirectoryInfo(fullName) ])
+let getDirs (tableName : string) varEnv = 
+    let dirs = 
+        match getVar tableName varEnv with
+        | Some(name, fullName : string) -> 
+            // if path end with \ then get all sub dirs
+            if fullName.EndsWith("\\") then getSubDirs (fullName) |> List.ofArray
+            else [ new DirectoryInfo(fullName) ]
+        | None -> []
+    tableName, dirs
+
+let initalDirEnv dirs varenv = dirs |> List.map (fun dir -> getDirs dir varenv)
+let evalSetExpr = ()
+
+let evalWhereExpr expr (tableEnv : (string * DirectoryInfo list) list) = 
+    let rec isSatisfy expr' dirinfo = 
+        match expr' with
+        | Cst(cst) -> cst = CstB(true)
+        | Prim(op, exprs) -> 
+            match op with
+            | "!" -> not (isSatisfy (exprs.Item(0)) dirinfo)
+            | "&&" -> (isSatisfy (exprs.Item(0)) dirinfo) && (isSatisfy (exprs.Item(1)) dirinfo)
+            | "||" -> (isSatisfy (exprs.Item(0)) dirinfo) || (isSatisfy (exprs.Item(1)) dirinfo)
+            | _ -> failwith "unsupport where logic operactor"
+        | Like(expr', ptn) -> true
+        | _ -> failwith "unsupport where expr."
+    tableEnv
+    |> List.map (fun (tname, dirs) -> dirs |> List.filter (isSatisfy expr))
+    |> List.fold (fun acc dirs -> dirs @ acc) []
 
 //eval absyn 
-let eval stmt = 
+let eval stmt varenv = 
     match stmt with
-    | Select(exprs, dirs, Some(whereExprs)) -> ()
+    | Select(exprs, dirs, Some(whereExpr)) -> 
+        let direnv = initalDirEnv dirs varenv
+        let dirlist = evalWhereExpr whereExpr direnv
+        ()
     | Select(exprs, dirs, None) -> ()
     | Set(name, str) -> ()
 (*

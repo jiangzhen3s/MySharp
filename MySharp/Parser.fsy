@@ -42,7 +42,7 @@ Main:
 ;
 
 Stmt:
-    SELECT Exprs1 FROM Names1  WHERE Exprs1       { Select($2, $4 ,Some($6)) }
+    SELECT Exprs1 FROM Names1  WHERE Expr       { Select($2, $4 ,Some($6)) }
    |SELECT Exprs1 FROM Names1  { Select($2, $4 ,None) }
    |SET NAME ASSIGN CSTSTRING  {Set($2,$4)}
 ;
