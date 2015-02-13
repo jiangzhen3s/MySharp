@@ -12,7 +12,7 @@ type constant =
 type stmt =
   | Select of expr list                 (* fields are expressions         *)
             * string list               (* FROM ...                       *)
-            * expr list option                (* where ...*)
+            * expr option                (* where ...*)
   | Set of string * string              (* table Name alias*)
 
 and column =
@@ -25,7 +25,3 @@ and expr =
   | ColumnExpr of column                (* Column                         *)
   | Prim of string * expr list          (* Built-in function              *)
   | Like of expr*string                 (* Like ,pattern type is regex *)
-
-and logicExpr =
-  | And of expr * expr                  (*logic and  op for exprs*)
-  | Or of expr * expr                   (*logic or  op for exprs*)
