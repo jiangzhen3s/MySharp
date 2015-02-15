@@ -67,4 +67,4 @@ type ``lexer test: like token test ``() =
     member test.``test parser: like keyword``() = 
         let src = "SELECT * FROM A WHERE C LIKE '%abc%'"
         let stmt = fromString src
-        stmt |> should equal (Select([ Star ], [ "a" ], Some([ Like(ColumnExpr(Column("c")), "%abc%") ])))
+        stmt |> should equal (Select([ Star ], [ "a" ], Some(Like(ColumnExpr(Column("c")), "%abc%"))))

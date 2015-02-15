@@ -8,7 +8,7 @@ type constant =
   | CstI of int                         (* Integer constant               *)
   | CstB of bool                        (* Boolean constant               *)
   | CstS of string                      (* String constant                *)
-
+  
 type stmt =
   | Select of expr list                 (* fields are expressions         *)
             * string list               (* FROM ...                       *)

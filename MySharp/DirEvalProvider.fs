@@ -44,7 +44,6 @@ let getDirs (tableName : string) varEnv =
     tableName, dirs
 
 let initalDirEnv dirs varenv = dirs |> List.map (fun dir -> getDirs dir varenv)
-let evalSetExpr = ()
 
 let evalWhereExpr expr (tableEnv : (string * DirectoryInfo list) list) = 
     let rec isSatisfy expr' dirinfo = 
@@ -62,15 +61,51 @@ let evalWhereExpr expr (tableEnv : (string * DirectoryInfo list) list) =
     |> List.map (fun (tname, dirs) -> dirs |> List.filter (isSatisfy expr))
     |> List.fold (fun acc dirs -> dirs @ acc) []
 
-//eval absyn 
+let evalExpr expr varenv (direnv : (string * DirectoryInfo list) list) = 
+    match expr with
+    | Star -> 
+        direnv
+        |> List.map (fun (tn, dirs) -> dirs)
+        |> List.map (fun dirinfo -> getAllValue dirinfo |> List.ofArray)
+    | Cst(cst) -> 
+        let v = 
+            match cst with
+            | CstI(i) -> i.ToString()
+            | CstB(b) -> b.ToString()
+            | CstS(s) -> s
+        direnv
+        |> List.map (fun (tn, dirs) -> dirs)
+        |> List.map (fun _ -> [ ("ConstValue", v) ])
+    | ColumnExpr(col) -> 
+        //let getColumn col =
+        match col with
+        | Column(cname) -> 
+            direnv
+            |> List.map (fun (tn, dirs) -> dirs)
+            |> List.map (fun dirinfo -> getAllValue dirinfo |> List.ofArray)
+            |> List.map (fun dirs -> [ dirs |> List.find (fun (colname, value) -> colname = cname) ])
+        | TableColumn(tname, cname) -> 
+            direnv
+            |> List.filter (fun (tn, _) -> tn = tname)
+            |> List.map (fun (_, dirs) -> dirs)
+            |> List.map (fun dirinfo -> getAllValue dirinfo |> List.ofArray)
+            |> List.map (fun dirs -> [ dirs |> List.find (fun (colname, value) -> colname = cname) ])
+    | _ -> failwith "unimplement expr eval,Stay tuned ."
+
+//eval absyn ,return new varenv
 let eval stmt varenv = 
     match stmt with
-    | Select(exprs, dirs, Some(whereExpr)) -> 
+    | Select(exprs, dirs, None) -> 
         let direnv = initalDirEnv dirs varenv
-        let dirlist = evalWhereExpr whereExpr direnv
-        ()
-    | Select(exprs, dirs, None) -> ()
-    | Set(name, str) -> ()
+        let vs = exprs |> List.map (fun expr -> evalExpr expr varenv direnv)
+        varenv
+    //    | Select(exprs, dirs, Some(whereExpr)) -> 
+    //        let direnv = initalDirEnv dirs varenv
+    //        let dirlist = evalWhereExpr whereExpr direnv
+    //        exprs |> List.map (fun expr -> evalExpr expr varenv direnv)
+    //        varenv
+    | Set(name, str) -> (name, str) :: varenv
+    | _ -> failwith "Stay tuned."
 (*
 stmt examples:
 SET allsubdirs <- 'C:\\Temp\\'
